@@ -1535,20 +1535,8 @@
       <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
         <div class="newsletter-fields">
           <div class="nl-field">
-            <label for="nl-name">Your Name</label>
-            <input type="text" id="nl-name" placeholder="John Murphy" required />
-          </div>
-          <div class="nl-field">
             <label for="nl-email">Email Address</label>
             <input type="email" id="nl-email" placeholder="john@example.com" required />
-          </div>
-          <div class="nl-field">
-            <label for="nl-interest">I'm interested in</label>
-            <select id="nl-interest">
-              <option value="both">Rentals &amp; Sales</option>
-              <option value="rent">Rentals only</option>
-              <option value="sale">Sales only</option>
-            </select>
           </div>
         </div>
         <button type="submit" class="nl-submit">
@@ -1739,12 +1727,9 @@
     // Newsletter subscription
     function handleNewsletterSubmit(e) {
       e.preventDefault();
-      const name     = document.getElementById('nl-name').value;
-      const email    = document.getElementById('nl-email').value;
-      const interest = document.getElementById('nl-interest').value;
-      const interestLabel = { both: 'Rentals & Sales', rent: 'Rentals only', sale: 'Sales only' }[interest];
-      const subject = encodeURIComponent(`Newsletter Signup – ${name}`);
-      const body    = encodeURIComponent(`New newsletter subscriber:\n\nName: ${name}\nEmail: ${email}\nInterested in: ${interestLabel}`);
+      const email   = document.getElementById('nl-email').value;
+      const subject = encodeURIComponent('Newsletter Signup – New Subscriber');
+      const body    = encodeURIComponent(`New newsletter subscriber:\n\nEmail: ${email}`);
       window.location.href = `mailto:info@lettingagents.ie?subject=${subject}&body=${body}`;
       e.target.querySelector('.nl-submit').style.display = 'none';
       document.getElementById('nl-success').classList.add('show');
