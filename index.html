@@ -692,6 +692,129 @@
       line-height: 1.6;
     }
 
+    /* ─── NEWSLETTER ─── */
+    #newsletter {
+      background: var(--purple-deep);
+      padding: 80px 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #newsletter::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(178,210,54,0.1) 0%, transparent 70%);
+      top: -100px; right: 5%;
+      pointer-events: none;
+    }
+
+    .newsletter-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+    }
+
+    @media (max-width: 768px) {
+      .newsletter-inner { grid-template-columns: 1fr; gap: 36px; }
+    }
+
+    .newsletter-text .section-label { color: var(--lime-bright); }
+    .newsletter-text .section-title { color: white; margin-bottom: 14px; }
+    .newsletter-text p {
+      color: rgba(255,255,255,0.65);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .newsletter-form { display: flex; flex-direction: column; gap: 14px; }
+
+    .newsletter-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .nl-field { display: flex; flex-direction: column; gap: 6px; }
+
+    .nl-field label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .nl-field input,
+    .nl-field select {
+      padding: 13px 16px;
+      border-radius: 9px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
+      color: white;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .nl-field input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .nl-field input:focus,
+    .nl-field select:focus {
+      border-color: var(--lime);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .nl-field select option { background: #2C1654; color: white; }
+
+    .nl-submit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 24px;
+      background: var(--lime);
+      color: var(--purple-deep);
+      border: none;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.2px;
+      margin-top: 4px;
+    }
+
+    .nl-submit:hover {
+      background: var(--lime-bright);
+      box-shadow: 0 6px 24px rgba(178,210,54,0.35);
+    }
+
+    .nl-note {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+    }
+
+    .nl-success {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(178,210,54,0.15);
+      border: 1px solid rgba(178,210,54,0.35);
+      color: var(--lime-bright);
+      padding: 14px 18px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .nl-success.show { display: flex; }
+
     /* ─── CONTACT ─── */
     #contact { background: white; }
 
@@ -1401,6 +1524,46 @@
     </div>
   </section>
 
+  <!-- ─── NEWSLETTER ─── -->
+  <section id="newsletter">
+    <div class="newsletter-inner reveal">
+      <div class="newsletter-text">
+        <div class="section-label">Stay Updated</div>
+        <h2 class="section-title">New Listings Direct<br />to Your Inbox</h2>
+        <p>Be the first to hear about new rental and sale properties across Dublin, Wicklow and Wexford. No spam — just properties.</p>
+      </div>
+      <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+        <div class="newsletter-fields">
+          <div class="nl-field">
+            <label for="nl-name">Your Name</label>
+            <input type="text" id="nl-name" placeholder="John Murphy" required />
+          </div>
+          <div class="nl-field">
+            <label for="nl-email">Email Address</label>
+            <input type="email" id="nl-email" placeholder="john@example.com" required />
+          </div>
+          <div class="nl-field">
+            <label for="nl-interest">I'm interested in</label>
+            <select id="nl-interest">
+              <option value="both">Rentals &amp; Sales</option>
+              <option value="rent">Rentals only</option>
+              <option value="sale">Sales only</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="nl-submit">
+          Subscribe to Listings
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <p class="nl-note">We respect your privacy. Unsubscribe any time.</p>
+        <div class="nl-success" id="nl-success">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          You're subscribed! We'll be in touch with new listings.
+        </div>
+      </form>
+    </div>
+  </section>
+
   <!-- ─── CONTACT ─── -->
   <section id="contact">
     <div class="contact-inner">
@@ -1572,6 +1735,20 @@
     document.querySelectorAll('.nav-links a').forEach(a => {
       a.addEventListener('click', () => navLinks.classList.remove('open'));
     });
+
+    // Newsletter subscription
+    function handleNewsletterSubmit(e) {
+      e.preventDefault();
+      const name     = document.getElementById('nl-name').value;
+      const email    = document.getElementById('nl-email').value;
+      const interest = document.getElementById('nl-interest').value;
+      const interestLabel = { both: 'Rentals & Sales', rent: 'Rentals only', sale: 'Sales only' }[interest];
+      const subject = encodeURIComponent(`Newsletter Signup – ${name}`);
+      const body    = encodeURIComponent(`New newsletter subscriber:\n\nName: ${name}\nEmail: ${email}\nInterested in: ${interestLabel}`);
+      window.location.href = `mailto:info@lettingagents.ie?subject=${subject}&body=${body}`;
+      e.target.querySelector('.nl-submit').style.display = 'none';
+      document.getElementById('nl-success').classList.add('show');
+    }
 
     // Contact form → mailto
     function handleSubmit(e) {
