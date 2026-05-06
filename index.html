@@ -908,9 +908,11 @@
     .hamburger {
       display: none;
       flex-direction: column;
+      justify-content: center;
       gap: 5px;
       cursor: pointer;
-      padding: 4px;
+      padding: 8px;
+      z-index: 200;
     }
 
     .hamburger span {
@@ -918,11 +920,70 @@
       width: 24px; height: 2px;
       background: white;
       border-radius: 2px;
-      transition: transform 0.2s, opacity 0.2s;
+      transition: transform 0.25s, opacity 0.25s;
     }
 
+    /* Animated X when open */
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--lime); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--lime); }
+
     @media (max-width: 800px) {
-      .nav-links { display: none; }
+      .nav-links {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 0;
+        position: fixed;
+        top: 70px; left: 0; right: 0; bottom: 0;
+        background: var(--purple-deep);
+        padding: 40px 8%;
+        z-index: 150;
+        /* Hidden by default */
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-12px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        pointer-events: all;
+        transform: translateY(0);
+      }
+
+      .nav-links li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+
+      .nav-links li:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+
+      .nav-links a {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: rgba(255,255,255,0.85);
+        padding: 18px 0;
+        letter-spacing: 0.3px;
+      }
+
+      .nav-links a:hover { color: var(--lime-bright); }
+
+      /* Contact button — full width in mobile menu */
+      .nav-links .nav-cta {
+        display: block;
+        margin-top: 28px;
+        text-align: center;
+        padding: 16px 48px !important;
+        border-radius: 8px;
+        font-size: 1rem;
+        width: 100%;
+      }
+
+      .nav-links li:last-child { border-bottom: none; }
+
       .hamburger { display: flex; }
     }
 
@@ -932,8 +993,8 @@
       /* Nav — hide full logo subtitle, tighten padding */
       nav { padding: 0 4%; }
       .nav-logo-text span { display: none; }
-      .nav-logo-text { font-size: 14px; }
-      .nav-logo-icon { width: 36px; height: 36px; font-size: 12px; }
+      .nav-logo-text { font-size: 13px; }
+      .nav-logo-icon { width: 34px; height: 34px; font-size: 11px; }
 
       /* Sections — less vertical breathing room */
       section { padding: 60px 5%; }
@@ -1451,21 +1512,20 @@
     // Mobile nav
     function toggleMenu(btn) {
       const links = document.querySelector('.nav-links');
-      const open = links.style.display === 'flex';
-      links.style.cssText = open
-        ? ''
-        : 'display:flex;flex-direction:column;position:fixed;top:70px;left:0;right:0;bottom:0;background:rgba(44,22,84,0.98);padding:32px 6%;gap:28px;z-index:99;overflow-y:auto;';
-      btn.innerHTML = open
-        ? '<span></span><span></span><span></span>'
-        : '<span style="transform:rotate(45deg);position:relative;top:7px;background:var(--lime)"></span><span style="opacity:0"></span><span style="transform:rotate(-45deg);position:relative;top:-7px;background:var(--lime)"></span>';
+      const isOpen = links.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+
+    function closeMenu() {
+      document.querySelector('.nav-links').classList.remove('open');
+      document.querySelector('.hamburger').classList.remove('open');
+      document.body.style.overflow = '';
     }
 
     document.querySelectorAll('.nav-links a').forEach(a => {
-      a.addEventListener('click', () => {
-        const links = document.querySelector('.nav-links');
-        links.style.cssText = '';
-        document.querySelector('.hamburger').innerHTML = '<span></span><span></span><span></span>';
-      });
+      a.addEventListener('click', closeMenu);
     });
 
     // Contact form → mailto
